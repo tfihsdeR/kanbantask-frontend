@@ -26,6 +26,7 @@ const BoardCard = ({
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [boardTitle, setBoardTitle] = useState<string>(board!.title!);
+    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
 
     const handleEdit = () => {
@@ -46,8 +47,10 @@ const BoardCard = ({
         router.replace(navigate);
     }
 
-    const handleUpdateBoard = () => {
+    const handleUpdateBoard = async () => {
+        setIsSubmitted(true);
         // Handle update board
+        setIsSubmitted(false);
     }
 
     return (
@@ -65,6 +68,9 @@ const BoardCard = ({
                     fontSize='xl'
                     removeUnderline={!isEditing}
                     textCenter={true}
+                    onChange={e => setBoardTitle(e.target.value)}
+                    disabled={!isEditing}
+                    defaultName={board.title}
                 />
 
                 <ButtonSm

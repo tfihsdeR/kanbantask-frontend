@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+
 const Input = ({
     name,
     type,
@@ -9,6 +11,8 @@ const Input = ({
     fontSize,
     removeUnderline = false,
     textCenter = false,
+    onChange,
+    defaultName,
 }: {
     name: string,
     type: string,
@@ -20,24 +24,86 @@ const Input = ({
     fontSize?: "sm" | "xl" | "2xl" | "base"
     removeUnderline?: boolean
     textCenter?: boolean
+    onChange?: (e: any) => void
+    defaultName?: string
 }) => {
     const _fontSize = fontSize === "sm" ? "text-sm" : fontSize === "xl" ? "text-xl" : fontSize === "2xl" ? "text-2xl" : fontSize === "base" ? "text-base" : "text-3xl"
+
+    const [_value, setValue] = useState<string>(value!);
+
+    useEffect(() => {
+        if (disabled && defaultName && _value !== defaultName) {
+            setValue(defaultName);
+        }
+    }, [disabled, defaultName, _value]);
+
+    const handleChange = (e: any) => {
+        setValue(e.target.value);
+        if (onChange) {
+            onChange(e);
+        }
+    }
 
     return (
         <input
             name={name}
             type={type}
             placeholder={placeholder}
-            value={value}
+            value={_value}
             disabled={disabled}
             required
             className={`${smallGap ? "h-10" : "h-20"} bg-transparent ${textCenter && "text-center"} ${!removeUnderline && "border-b"} ${_fontSize} w-4/5 self-center focus:outline-none 
-            ${disabled && "opacity-50 cursor-default"}
+            ${disabled && "cursor-default"}
             ${fullWidth && "w-full"}`}
+            onChange={handleChange}
         >
-
         </input>
     )
 }
 
 export default Input
+
+
+// const Input = ({
+//     name,
+//     type,
+//     placeholder,
+//     value,
+//     disabled,
+//     fullWidth,
+//     smallGap,
+//     fontSize,
+//     removeUnderline = false,
+//     textCenter = false,
+// }: {
+//     name: string,
+//     type: string,
+//     placeholder?: string,
+//     value?: string,
+//     disabled?: boolean,
+//     fullWidth?: boolean,
+//     smallGap?: boolean
+//     fontSize?: "sm" | "xl" | "2xl" | "base"
+//     removeUnderline?: boolean
+//     textCenter?: boolean
+// }) => {
+//     const _fontSize = fontSize === "sm" ? "text-sm" : fontSize === "xl" ? "text-xl" : fontSize === "2xl" ? "text-2xl" : fontSize === "base" ? "text-base" : "text-3xl"
+
+//     return (
+//         <input
+//             name={name}
+//             type={type}
+//             placeholder={placeholder}
+//             value={value}
+//             disabled={disabled}
+//             required
+//             className={`${smallGap ? "h-10" : "h-20"} bg-transparent ${textCenter && "text-center"} ${!removeUnderline && "border-b"} ${_fontSize} w-4/5 self-center focus:outline-none
+//             ${disabled && "opacity-50 cursor-default"}
+//             ${fullWidth && "w-full"}`}
+//         >
+
+//         </input>
+//     )
+// }
+
+// export default Input
