@@ -1,4 +1,4 @@
-import { ITask, Status } from "@/common.types";
+import { ITask, Status } from "@/types/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const url = 'http://localhost:4000';
@@ -138,3 +138,87 @@ export const deleteTask = createAsyncThunk(
         }
     }
 )
+
+const taskSlice = createSlice({
+    name: 'task',
+    initialState,
+    reducers: {
+        clearTask: (state) => {
+            state.task = initialState.task;
+            state.message = null;
+            state.error = null;
+        }
+    },
+    extraReducers: (builder) => {
+        // Create Task
+        builder.addCase(createTask.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(createTask.fulfilled, (state, action) => {
+            state.loading = false;
+            state.task = action.payload.task;
+            state.message = action.payload.message;
+        });
+        builder.addCase(createTask.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action!.error!.message!
+        });
+
+        // Read Task By Board Id
+        builder.addCase(readTaskById.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(readTaskById.fulfilled, (state, action) => {
+            state.loading = false;
+            state.task = action.payload.task;
+            state.message = action.payload.message;
+        });
+        builder.addCase(readTaskById.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action!.error!.message!
+        });
+
+        // Read Tasks By Board Id
+        builder.addCase(readTasksByBoardId.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(readTasksByBoardId.fulfilled, (state, action) => {
+            state.loading = false;
+            state.tasks = action.payload.tasks;
+            state.message = action.payload.message;
+        });
+        builder.addCase(readTasksByBoardId.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action!.error!.message!
+        });
+
+        // Update Task
+        builder.addCase(updateTask.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(updateTask.fulfilled, (state, action) => {
+            state.loading = false;
+            state.task = action.payload.task;
+            state.message = action.payload.message;
+        });
+        builder.addCase(updateTask.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action!.error!.message!
+        });
+
+        // Delete Task
+        builder.addCase(deleteTask.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteTask.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload.message;
+        });
+        builder.addCase(deleteTask.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action!.error!.message!
+        });
+    }
+});
+
+export default taskSlice.reducer;

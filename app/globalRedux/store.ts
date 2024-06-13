@@ -2,12 +2,14 @@
 
 import { configureStore, Action, ThunkAction } from "@reduxjs/toolkit"
 import {
-    kanbanBoardSlice
+    kanbanBoardSlice,
+    taskSlice
 } from "./features"
 
 export const store = configureStore({
     reducer: {
-        kanbanBoard: kanbanBoardSlice
+        kanbanBoard: kanbanBoardSlice,
+        taskState: taskSlice
     }
 })
 

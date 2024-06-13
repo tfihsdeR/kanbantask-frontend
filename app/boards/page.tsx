@@ -7,12 +7,14 @@ import { AppDispatch, RootState } from '../globalRedux/store';
 import { useRouter } from 'next/navigation';
 import { readAllKanbanBoards } from '../globalRedux/features/kanbanBoardSlice';
 import Button from '@/components/ui/Button';
+import toast from 'react-hot-toast';
+import { SyncLoader } from 'react-spinners';
 
 const Boards = () => {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
-    const { boards, error, loading } = useSelector((state: RootState) => state.kanbanBoard);
+    const { boards, error, message, loading } = useSelector((state: RootState) => state.kanbanBoard);
 
     const [state, setState] = React.useState(false);
 
@@ -27,20 +29,27 @@ const Boards = () => {
 
     useEffect(() => {
         if (!boards[0]?._id && !loading && state) {
-            router.push('/onboarding');
+            router.replace('/onboarding');
         }
     }, [boards, state]);
 
+    useEffect(() => {
+        if (error) {
+            toast.error(message);
+        }
+    }, [error]);
+
     const handleCreateBoard = () => {
-        router.push('/onboarding');
+        router.replace('/onboarding');
     }
 
-    // const board = {
-    //     _id: '65',
-    //     title: 'My First Board',
-    //     createdBy: 'John Doe',
-    //     createdAt: new Date()
-    // }
+    if (loading || boards.length === 0) {
+        return (
+            <div className="h-screen w-full flex justify-center items-center">
+                <SyncLoader color='#fff' />
+            </div>
+        )
+    }
 
     return (
         <div className="bg-gradient-to-b from-black to-purple-900 h-full min-h-[100vh] relative w-full bg-cover mt-[-75px]">

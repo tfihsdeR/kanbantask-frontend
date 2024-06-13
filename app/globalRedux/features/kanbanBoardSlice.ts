@@ -1,4 +1,4 @@
-import { IKanbanBoard } from "@/common.types";
+import { IKanbanBoard } from "@/types/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const url = 'http://localhost:4000';
@@ -250,7 +250,6 @@ const kanbanBoardSlice = createSlice({
                 state.loading = true;
             })
             .addCase(deleteKanbanBoard.fulfilled, (state, action) => {
-                state.board = action.payload;
                 state.message = action.payload.message;
                 state.loading = false;
             })

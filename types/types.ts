@@ -21,8 +21,14 @@ export interface ITask {
 }
 
 export enum Status {
-    BACKLOG,
-    TODO,
-    IN_PROGRESS,
-    DESIGNED
+    TODO = "TODO",
+    IN_PROGRESS = "IN_PROGRESS",
+    DESIGNED = "DESIGNED",
+    BACKLOG = "BACKLOG"
+}
+
+export interface IColumnProps {
+    title: string;
+    tasks: ITask[];
+    droppableId: string;
 }

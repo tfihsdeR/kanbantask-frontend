@@ -10,8 +10,8 @@ import Button from "./ui/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/app/globalRedux/store";
 import { createCanbanBoard } from "@/app/globalRedux/features/kanbanBoardSlice";
-import { createTask } from "@/app/globalRedux/features/taskSlices";
-import { IKanbanBoard, ITask } from "@/types/Types";
+import { createTask } from "@/app/globalRedux/features/taskSlice";
+import { IKanbanBoard, ITask } from "@/types/types";
 
 const variants = {
     hidden: { opacity: 0 },
@@ -23,7 +23,7 @@ const OnboardingForm = () => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
 
-    const { board, error, loading } = useSelector((state: RootState) => state.kanbanBoard);
+    const { board, error, message, loading } = useSelector((state: RootState) => state.kanbanBoard);
 
     const [step, setStep] = useState(1);
 
@@ -81,7 +81,7 @@ const OnboardingForm = () => {
 
     useEffect(() => {
         if (error) {
-            toast.error(error);
+            toast.error(message);
         }
     }, [error]);
 
@@ -116,6 +116,12 @@ const OnboardingForm = () => {
                             disabled={loading}
                         />
                         <Button text="Continue" type="submit" />
+                        {loading ? (
+                            <div className="flex gap-3 items-center text-white">
+                                <SyncLoader color="#fff" />
+                                <span>Getting Your Board Ready</span>
+                            </div>
+                        ) : null}
                     </form>
                 </motion.div>
             )}
