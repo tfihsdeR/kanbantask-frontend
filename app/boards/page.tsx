@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../globalRedux/store';
 import { useRouter } from 'next/navigation';
 import { readAllKanbanBoards } from '../globalRedux/features/kanbanBoardSlice';
-import Button from '@/components/ui/Button';
+import ButtonXl from '@/components/ui/ButtonXl';
 import toast from 'react-hot-toast';
 import { SyncLoader } from 'react-spinners';
 
@@ -56,7 +56,7 @@ const Boards = () => {
             <div className="flex flex-col h-full items-center pt-[82px] w-full mx-auto max-w-[1450px] text-white">
                 <h1 className="mb-10 font-bold text-4xl mt-5">Your Boards</h1>
                 <div className="justify-start w-full mb-10 ml-28">
-                    <Button text='Create New Board' type='button' onClick={handleCreateBoard} />
+                    <ButtonXl text='Create New Board' type='button' onClick={handleCreateBoard} />
                 </div>
                 <div className="flex flex-wrap gap-4 justify-center mb-5">
                     {boards && boards.map(board => {

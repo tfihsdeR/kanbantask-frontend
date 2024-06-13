@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Button from './ui/Button'
+import ButtonXl from './ui/ButtonXl'
 
 const Hero = () => {
     return (
@@ -22,7 +22,7 @@ const Hero = () => {
                         </div>
 
                         <Link href={"/boards"}>
-                            <Button text="Start Planning Now &#8594;" />
+                            <ButtonXl text="Start Planning Now &#8594;" />
                         </Link>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion"
 import Input from "./ui/Input";
-import Button from "./ui/Button";
+import ButtonXl from "./ui/ButtonXl";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/app/globalRedux/store";
 import { createCanbanBoard } from "@/app/globalRedux/features/kanbanBoardSlice";
@@ -115,7 +115,7 @@ const OnboardingForm = () => {
                             placeholder="Board name"
                             disabled={loading}
                         />
-                        <Button text="Continue" type="submit" />
+                        <ButtonXl text="Continue" type="submit" />
                         {loading ? (
                             <div className="flex gap-3 items-center text-white">
                                 <SyncLoader color="#fff" />
@@ -148,12 +148,12 @@ const OnboardingForm = () => {
                         />
 
                         <div className="flex justify-between w-4/5 mb-10">
-                            <Button
+                            <ButtonXl
                                 text="&#8592; Go Back"
                                 onClick={goBack}
                                 disabled={loading}
                             />
-                            <Button
+                            <ButtonXl
                                 text="Continue"
                                 type="submit"
                                 disabled={loading}

@@ -1,4 +1,4 @@
-const Button = ({
+const ButtonXl = ({
     text,
     type,
     onClick,
@@ -23,4 +23,4 @@ const Button = ({
     )
 }
 
-export default Button
+export default ButtonXl

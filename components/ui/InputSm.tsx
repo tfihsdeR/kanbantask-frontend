@@ -5,10 +5,6 @@ const Input = ({
     value,
     disabled,
     fullWidth,
-    smallGap,
-    fontSize,
-    removeUnderline = false,
-    textCenter = false,
 }: {
     name: string,
     type: string,
@@ -16,13 +12,7 @@ const Input = ({
     value?: string,
     disabled?: boolean,
     fullWidth?: boolean,
-    smallGap?: boolean
-    fontSize?: "sm" | "xl" | "2xl" | "base"
-    removeUnderline?: boolean
-    textCenter?: boolean
 }) => {
-    const _fontSize = fontSize === "sm" ? "text-sm" : fontSize === "xl" ? "text-xl" : fontSize === "2xl" ? "text-2xl" : fontSize === "base" ? "text-base" : "text-3xl"
-
     return (
         <input
             name={name}
@@ -31,7 +21,7 @@ const Input = ({
             value={value}
             disabled={disabled}
             required
-            className={`${smallGap ? "h-10" : "h-20"} bg-transparent ${textCenter && "text-center"} ${!removeUnderline && "border-b"} ${_fontSize} w-4/5 self-center focus:outline-none 
+            className={`h-20 bg-transparent border-b text-3xl w-4/5 self-center focus:outline-none 
             ${disabled && "opacity-50 cursor-default"}
             ${fullWidth && "w-full"}`}
         >
