@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from '@/app/globalRedux/store';
 import { deleteKanbanBoard } from '@/app/globalRedux/features/kanbanBoardSlice';
 import toast from 'react-hot-toast';
 import Input from './Input';
-import ButtonSm from './ButtonSm';
+import Button from './Button';
 
 const BoardCard = ({
     board,
@@ -71,10 +71,13 @@ const BoardCard = ({
                     defaultName={board.title}
                 />
 
-                <ButtonSm
+                <Button
                     text="Update"
                     type="submit"
                     disabled={isEditing}
+                    buttonSize="xs"
+                    hidden={!isEditing}
+                    textAlignment="center"
                 />
             </form>
 

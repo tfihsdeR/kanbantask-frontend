@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion"
 import Input from "./ui/Input";
-import ButtonXl from "./ui/ButtonXl";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/app/globalRedux/store";
 import { createCanbanBoard } from "@/app/globalRedux/features/kanbanBoardSlice";
 import { createTask } from "@/app/globalRedux/features/taskSlice";
 import { IKanbanBoard, ITask } from "@/types/types";
+import Button from "./ui/Button";
 
 const variants = {
     hidden: { opacity: 0 },
@@ -115,7 +115,11 @@ const OnboardingForm = () => {
                             placeholder="Board name"
                             disabled={loading}
                         />
-                        <ButtonXl text="Continue" type="submit" />
+                        <Button
+                            text="Continue"
+                            type="submit"
+                            buttonSize="lg"
+                        />
                         {loading ? (
                             <div className="flex gap-3 items-center text-white">
                                 <SyncLoader color="#fff" />
@@ -148,15 +152,17 @@ const OnboardingForm = () => {
                         />
 
                         <div className="flex justify-between w-4/5 mb-10">
-                            <ButtonXl
+                            <Button
                                 text="&#8592; Go Back"
                                 onClick={goBack}
-                                disabled={loading}
+                                giveOpacity={loading}
+                                buttonSize="lg"
                             />
-                            <ButtonXl
+                            <Button
                                 text="Continue"
                                 type="submit"
-                                disabled={loading}
+                                giveOpacity={loading}
+                                buttonSize="lg"
                             />
                         </div>
                         {loading ? (
