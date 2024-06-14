@@ -48,9 +48,7 @@ const BoardCard = ({
     }
 
     const handleUpdateBoard = async () => {
-        setIsSubmitted(true);
         // Handle update board
-        setIsSubmitted(false);
     }
 
     return (

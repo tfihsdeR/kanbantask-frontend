@@ -3,13 +3,13 @@ const ButtonSm = ({
     type,
     onClick,
     disabled,
-    confirmButton
+    confirmButton,
 }: {
     text: string,
     type?: "button" | "submit" | "reset",
     onClick?: () => void,
     disabled?: boolean,
-    confirmButton?: boolean
+    confirmButton?: boolean,
 }) => {
     return (
         <button
