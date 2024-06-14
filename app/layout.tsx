@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${ubuntu.className} dark:bg-gray-900 text-white`}>
+            <body className={`${ubuntu.className} bg-gradient-to-b from-black to-purple-900 text-white`}>
                 <ReduxProvider>
                     <ToasterContext />
                     <Navbar />

@@ -2,6 +2,7 @@ import { Droppable, Draggable } from "@hello-pangea/dnd"
 import { LuDot } from "react-icons/lu"
 import { useEffect, useState } from "react"
 import { ITask, IColumnProps } from "@/types/types"
+import Modal from "./Modal"
 
 const Column: React.FC<IColumnProps> = ({
     title,
@@ -11,16 +12,43 @@ const Column: React.FC<IColumnProps> = ({
     const [hoverIndex, setHoverIndex] = useState<number | null>(null)
     const [taskId, setTaskId] = useState<string | null>(null)
 
-    useEffect(() => {
-        if (tasks) {
-            console.log("Task:", tasks[0])
-        }
-    }, [tasks]);
+    const [isEdit, setIsEdit] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
+
+    const openDeleteModal = (taskId: string) => {
+        setIsDelete(true);
+        setTaskId(taskId);
+    };
+
+    const closeDeleteModal = () => {
+        setIsDelete(false);
+        setTaskId(null);
+    };
+
+    const openEditModal = (taskId: string) => {
+        setIsEdit(true);
+        setTaskId(taskId);
+    };
+
+    const closeEditModal = () => {
+        setIsEdit(false);
+        setTaskId(null);
+    };
+
+    const editTask = async (formData: FormData) => {
+        // Edit task
+    }
+
+    const deleteTask = async (formData: FormData) => {
+        // Delete task
+    }
 
     return (
         <div className="flex-1">
             <div className="flex gap-1 dark:text-white ">
-                <h2 className="text-sm font-semibold mb-4 uppercase">{title}</h2>
+                <h2 className="text-sm font-semibold mb-4 uppercase">
+                    {title}
+                </h2>
                 <LuDot />
             </div>
 
@@ -31,30 +59,71 @@ const Column: React.FC<IColumnProps> = ({
                         ref={provided.innerRef}
                         className="dark:bg-gray-800 bg-gray-200 rounded-lg p-4"
                     >
-                        {tasks?.map((task: ITask, index: number) => (
+                        {tasks.map((task, index) => (
                             <Draggable
                                 key={task._id}
-                                draggableId={task!._id!}
+                                draggableId={task._id!}
                                 index={index}
                             >
-                                {provided => (
+                                {(provided) => (
                                     <div
                                         className="bg-gray-700 rounded p-2 mb-2 text-white flex justify-between"
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
-                                        onMouseEnter={() => { () => setHoverIndex(index) }}
-                                        onMouseLeave={() => { () => setHoverIndex(null) }}
+                                        onMouseEnter={() =>
+                                            setHoverIndex(index)
+                                        }
+                                        onMouseLeave={() => setHoverIndex(null)}
                                     >
-                                        <LuDot />
                                         {task.title}
+                                        {hoverIndex === index && (
+                                            <div className="flex gap-5">
+                                                <span
+                                                    className="text-xs text-gray-400 mt-1 cursor-pointer"
+                                                    onClick={() =>
+                                                        openEditModal(task._id!)
+                                                    }
+                                                >
+                                                    Edit
+                                                </span>
+                                                <span
+                                                    className="text-xs text-gray-400 mt-1 cursor-pointer"
+                                                    onClick={() =>
+                                                        openDeleteModal(task._id!)
+                                                    }
+                                                >
+                                                    Delete
+                                                </span>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </Draggable>
+
                         ))}
+                        {provided.placeholder}
                     </div>
                 )}
             </Droppable>
+            {isEdit && (
+                <Modal
+                    closeModal={closeEditModal}
+                    isEdit={isEdit}
+                    value={taskId!}
+                    action={editTask}
+                    title="Edit Task"
+                />
+            )}
+            {isDelete && (
+                <Modal
+                    closeModal={closeDeleteModal}
+                    title="Are you sure you want to delete this task?"
+                    value={taskId!}
+                    action={deleteTask}
+                    isDelete={isDelete}
+                />
+            )}
         </div>
     )
 }

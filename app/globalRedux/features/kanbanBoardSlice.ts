@@ -169,7 +169,6 @@ export const deleteKanbanBoard = createAsyncThunk(
     }
 )
 
-
 const kanbanBoardSlice = createSlice({
     name: 'kanbanBoard',
     initialState,

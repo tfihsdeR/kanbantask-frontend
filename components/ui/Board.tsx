@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import { IKanbanBoard, ITask, Status } from '@/types/types'
 import { DragDropContext, DropResult } from '@hello-pangea/dnd'
 import Column from './Column'
-import { SyncLoader } from 'react-spinners'
+import Loader from './Loader'
 
 const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -17,22 +17,24 @@ const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
     const [_tasks, setTasks] = useState<ITask[] | null>(null);
 
     useEffect(() => {
-        if (board?._id) {
-            dispatch(readTasksByBoardId({ boardId: board!._id! }))
+        const readTasks = async () => {
+            if (board?._id) {
+                await dispatch(readTasksByBoardId({ boardId: board!._id! }))
+            }
         }
+
+        readTasks()
     }, [dispatch, board]);
+
+    useEffect(() => {
+        setTasks(tasks);
+    }, [tasks]);
 
     useEffect(() => {
         if (error) {
             toast.error(error);
         }
     }, [error]);
-
-    useEffect(() => {
-        if (tasks) {
-            console.log(tasks)
-        }
-    }, [tasks]);
 
     const onDragEnd = async (result: DropResult) => {
         const { destination, source, draggableId } = result;
@@ -65,13 +67,6 @@ const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
                 updatedStatus = draggedTask!.status!
         }
 
-        const updatedTask = {
-            ...draggedTask!,
-            status: updatedStatus
-        }
-
-        await dispatch(updateTask({ task: updatedTask }))
-
         const updatedTasks = tasks.map(task => {
             if (task._id === draggableId) {
                 return {
@@ -79,23 +74,25 @@ const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
                     status: updatedStatus
                 }
             }
-
             return task
         })
 
         setTasks(updatedTasks)
+
+        const newTask = {
+            ...draggedTask!,
+            status: updatedStatus
+        }
+
+        await dispatch(updateTask({ task: newTask }))
     }
 
     if (loading) {
-        return (
-            <div className="h-screen w-full flex justify-center items-center">
-                <SyncLoader color='#fff' />
-            </div>
-        )
+        <Loader />
     }
 
     return (
-        <div className="bg-gradient-to-b from-black to-purple-900 py-10 relative h-screen mt-[-75px]">
+        <div className="py-10 relative h-screen mt-[-75px]">
             <h1 className="font-bold text-center mb-10 text-3xl">
                 {board!.title}
             </h1>
@@ -103,22 +100,22 @@ const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
                 <div className="grid md:grid-cols-4 max-md:items-center w-[90%] max-w-[1500px] mx-auto md:gap-5 gap-10">
                     <Column
                         title={Status.BACKLOG}
-                        tasks={tasks!.filter(task => task.status === Status.BACKLOG)}
+                        tasks={_tasks ? _tasks!.filter(task => task.status === Status.BACKLOG) : []}
                         droppableId={Status.BACKLOG}
                     />
                     <Column
                         title={Status.TODO}
-                        tasks={tasks!.filter(task => task.status === Status.TODO)}
+                        tasks={_tasks ? _tasks!.filter(task => task.status === Status.TODO) : []}
                         droppableId={Status.TODO}
                     />
                     <Column
                         title={Status.IN_PROGRESS}
-                        tasks={tasks!.filter(task => task.status === Status.IN_PROGRESS)}
+                        tasks={_tasks ? _tasks!.filter(task => task.status === Status.IN_PROGRESS) : []}
                         droppableId={Status.IN_PROGRESS}
                     />
                     <Column
                         title={Status.DESIGNED}
-                        tasks={tasks!.filter(task => task.status === Status.DESIGNED)}
+                        tasks={_tasks ? _tasks!.filter(task => task.status === Status.DESIGNED) : []}
                         droppableId={Status.DESIGNED}
                     />
                 </div>
