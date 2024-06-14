@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import { IKanbanBoard, ITask, Status } from '@/types/types'
 import { DragDropContext, DropResult } from '@hello-pangea/dnd'
 import Column from './Column'
-import Loader from './Loader'
+import Loader from '../Loader'
 
 const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
     const dispatch = useDispatch<AppDispatch>();

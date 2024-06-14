@@ -41,10 +41,6 @@ const BoardCard = ({
         )
     }
 
-    const handleNavigate = () => {
-        router.replace(navigate);
-    }
-
     const handleUpdateBoard = (e: any) => {
         e.preventDefault();
 
@@ -120,7 +116,7 @@ const BoardCard = ({
                     <div>
                         <button
                             className="rounded-lg border-2 border-black px-1 font-normal text-sm active:scale-90 transition-all duration-200 cursor-pointer hover:bg-purple-600"
-                            onClick={handleNavigate}
+                            onClick={() => router.push(navigate)}
                         >
                             Tasks &#8594;
                         </button>
