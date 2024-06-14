@@ -80,7 +80,7 @@ const BoardCard = ({
     }
 
     return (
-        <div className="flex flex-col justify-center p-4 rounded-md shadow-md w-96 max-md:w-80 h-48 bg-purple-400 text-black text-2xl font-bold">
+        <div className="flex flex-col justify-center p-4 rounded-md shadow-md w-96 max-md:w-80 mx-2 h-48 bg-purple-400 text-black text-2xl font-bold">
             <form
                 className="flex flex-col gap-5 justify-center items-center w-full"
                 onSubmit={handleUpdateBoard}

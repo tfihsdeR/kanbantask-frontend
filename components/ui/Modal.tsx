@@ -50,7 +50,7 @@ const Modal = ({
                         {isEdit && (
                             <Input
                                 type="text"
-                                name="newTask"
+                                name="title"
                                 placeholder="Enter new task name"
                                 fullWidth
                             />

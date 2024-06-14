@@ -1,46 +1,58 @@
 import { Droppable, Draggable } from "@hello-pangea/dnd"
 import { LuDot } from "react-icons/lu"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { ITask, IColumnProps } from "@/types/types"
 import Modal from "./ui/Modal"
+import { useDispatch } from "react-redux"
+import { deleteTask, readTasksByBoardId, updateTask } from "@/app/globalRedux/features/taskSlice"
+import { AppDispatch } from "@/app/globalRedux/store"
 
 const Column: React.FC<IColumnProps> = ({
     title,
     tasks,
     droppableId
 }) => {
+    const dispatch = useDispatch<AppDispatch>()
+
     const [hoverIndex, setHoverIndex] = useState<number | null>(null)
-    const [taskId, setTaskId] = useState<string | null>(null)
+    const [editableTask, setEditableTask] = useState<ITask | null>(null)
 
     const [isEdit, setIsEdit] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
 
-    const openDeleteModal = (taskId: string) => {
+    const openDeleteModal = (task: ITask) => {
         setIsDelete(true);
-        setTaskId(taskId);
+        setEditableTask(task);
     };
 
     const closeDeleteModal = () => {
         setIsDelete(false);
-        setTaskId(null);
+        setEditableTask(null);
     };
 
-    const openEditModal = (taskId: string) => {
+    const openEditModal = (task: ITask) => {
         setIsEdit(true);
-        setTaskId(taskId);
+        setEditableTask(task);
     };
 
     const closeEditModal = () => {
         setIsEdit(false);
-        setTaskId(null);
+        setEditableTask(null);
     };
 
-    const editTask = async (formData: FormData) => {
-        // Edit task
+    const handleEditTask = async (formData: FormData) => {
+        const updatedTask: ITask = {
+            ...editableTask,
+            title: formData.get("title") as string,
+        }
+
+        await dispatch(updateTask({ task: updatedTask }))
+        await dispatch(readTasksByBoardId({ boardId: editableTask!.boardId! }))
     }
 
-    const deleteTask = async (formData: FormData) => {
-        // Delete task
+    const handleDeleteTask = async (formData: FormData) => {
+        await dispatch(deleteTask({ id: editableTask!._id! }))
+        await dispatch(readTasksByBoardId({ boardId: editableTask!.boardId! }))
     }
 
     return (
@@ -82,7 +94,7 @@ const Column: React.FC<IColumnProps> = ({
                                                 <span
                                                     className="text-xs text-gray-400 mt-1 cursor-pointer"
                                                     onClick={() =>
-                                                        openEditModal(task._id!)
+                                                        openEditModal(task)
                                                     }
                                                 >
                                                     Edit
@@ -90,7 +102,7 @@ const Column: React.FC<IColumnProps> = ({
                                                 <span
                                                     className="text-xs text-gray-400 mt-1 cursor-pointer"
                                                     onClick={() =>
-                                                        openDeleteModal(task._id!)
+                                                        openDeleteModal(task)
                                                     }
                                                 >
                                                     Delete
@@ -110,8 +122,8 @@ const Column: React.FC<IColumnProps> = ({
                 <Modal
                     closeModal={closeEditModal}
                     isEdit={isEdit}
-                    value={taskId!}
-                    action={editTask}
+                    value={editableTask!._id!}
+                    action={handleEditTask}
                     title="Edit Task"
                 />
             )}
@@ -119,8 +131,8 @@ const Column: React.FC<IColumnProps> = ({
                 <Modal
                     closeModal={closeDeleteModal}
                     title="Are you sure you want to delete this task?"
-                    value={taskId!}
-                    action={deleteTask}
+                    value={editableTask!._id!}
+                    action={handleDeleteTask}
                     isDelete={isDelete}
                 />
             )}

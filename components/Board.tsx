@@ -14,7 +14,7 @@ import Modal from './ui/Modal'
 const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
     const dispatch = useDispatch<AppDispatch>();
 
-    const { task, tasks, loading, error } = useSelector((state: RootState) => state.taskState);
+    const { tasks, loading, error } = useSelector((state: RootState) => state.taskState);
     const [isCreate, setIsCreate] = useState(false);
 
     const [_tasks, setTasks] = useState<ITask[]>([]);

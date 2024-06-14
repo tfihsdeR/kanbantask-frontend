@@ -10,7 +10,7 @@ export interface IKanbanBoard {
 export interface ITask {
     _id?: string;
     title: string;
-    boardId: string;
+    boardId?: string;
     createdBy?: string;
     status?: Status;
     references?: string[];
