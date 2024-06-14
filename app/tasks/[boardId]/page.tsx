@@ -1,12 +1,11 @@
 'use client'
-import Board from '@/components/ui/Board'
 import React, { useEffect } from 'react'
 import { useDispatch, UseDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/globalRedux/store'
 import { readKanbanBoardById } from '@/app/globalRedux/features/kanbanBoardSlice'
 import toast from 'react-hot-toast'
-import { SyncLoader } from 'react-spinners'
 import Loader from '@/components/Loader'
+import Board from '@/components/Board'
 
 const Tasks = ({ params }: { params: { boardId: string } }) => {
     const dispatch = useDispatch<AppDispatch>();

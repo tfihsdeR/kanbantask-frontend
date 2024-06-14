@@ -10,9 +10,6 @@ const Navbar = () => {
 
     const isMainPage = () => {
         const result = pathname.split('/')[1] === '' ? true : false
-        console.log('result:', result)
-        console.log('pathname:', pathname.split('/')[1])
-
         return result
     }
 

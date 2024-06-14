@@ -59,7 +59,7 @@ const Modal = ({
                             <>
                                 <Input
                                     type="text"
-                                    name="task"
+                                    name="title"
                                     placeholder="Enter task name"
                                     fullWidth
                                 />

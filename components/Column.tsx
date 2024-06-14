@@ -2,7 +2,7 @@ import { Droppable, Draggable } from "@hello-pangea/dnd"
 import { LuDot } from "react-icons/lu"
 import { useEffect, useState } from "react"
 import { ITask, IColumnProps } from "@/types/types"
-import Modal from "./Modal"
+import Modal from "./ui/Modal"
 
 const Column: React.FC<IColumnProps> = ({
     title,
