@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from '@/app/globalRedux/store'
 import { readKanbanBoardById } from '@/app/globalRedux/features/kanbanBoardSlice'
 import toast from 'react-hot-toast'
 import { SyncLoader } from 'react-spinners'
+import Loader from '@/components/Loader'
 
 const Tasks = ({ params }: { params: { boardId: string } }) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -21,13 +22,7 @@ const Tasks = ({ params }: { params: { boardId: string } }) => {
         dispatch(readKanbanBoardById({ id: params.boardId }))
     }, [dispatch]);
 
-    if (loading) {
-        return (
-            <div className="h-screen w-full flex justify-center items-center">
-                <SyncLoader color='#fff' />
-            </div>
-        )
-    }
+    if (loading) { <Loader /> }
 
     return (
         <Board board={board} />

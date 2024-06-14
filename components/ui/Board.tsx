@@ -93,7 +93,7 @@ const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
 
     return (
         <div className="py-10 relative h-screen mt-[-75px]">
-            <h1 className="font-bold text-center mb-10 text-3xl">
+            <h1 className="font-bold text-center mt-10 mb-10 text-3xl">
                 {board!.title}
             </h1>
             <DragDropContext onDragEnd={onDragEnd}>
