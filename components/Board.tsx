@@ -120,7 +120,7 @@ const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className="grid md:grid-cols-4 max-md:items-center w-[90%] max-w-[1500px] mx-auto md:gap-5 gap-10">
                     <button
-                        className="bg-gray-700 rounded-full hover:bg-gray-600 text-white font-bold p-4 absolute right-10 bottom-10"
+                        className="bg-gray-700 rounded-full hover:bg-gray-600 text-white font-bold p-4 fixed right-10 bottom-10"
                         onClick={OpenModal}
                     >
                         <FaPlus />

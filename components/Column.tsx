@@ -6,6 +6,7 @@ import Modal from "./ui/Modal"
 import { useDispatch } from "react-redux"
 import { deleteTask, readTasksByBoardId, updateTask } from "@/app/globalRedux/features/taskSlice"
 import { AppDispatch } from "@/app/globalRedux/store"
+import Loader from "./Loader"
 
 const Column: React.FC<IColumnProps> = ({
     title,
