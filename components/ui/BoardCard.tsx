@@ -5,9 +5,9 @@ import { MdDeleteForever } from 'react-icons/md';
 import { CiEdit } from 'react-icons/ci';
 import { useRouter } from 'next/navigation';
 import { IKanbanBoard } from '@/types/types';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/app/globalRedux/store';
-import { deleteKanbanBoard } from '@/app/globalRedux/features/kanbanBoardSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/app/globalRedux/store';
+import { deleteKanbanBoard, readAllKanbanBoards, updateKanbanBoard } from '@/app/globalRedux/features/kanbanBoardSlice';
 import toast from 'react-hot-toast';
 import Input from './Input';
 import Button from './Button';
@@ -22,37 +22,69 @@ const BoardCard = ({
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
 
-    const { message } = useSelector((state: RootState) => state.kanbanBoard);
-
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [boardTitle, setBoardTitle] = useState<string>(board!.title!);
-    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-
-
-    const handleEdit = () => {
-        // setIsEditing(true);
-    }
 
     const handleDelete = async () => {
-        await deleteBoard();
+        const deleteBoard = async () => {
+            await dispatch(deleteKanbanBoard({ id: board._id! }));
+            await dispatch(readAllKanbanBoards());
+        }
 
-        toast.success(message);
-    }
-
-    const deleteBoard = async () => {
-        await dispatch(deleteKanbanBoard({ id: board!._id! }));
+        toast.promise(
+            deleteBoard(),
+            {
+                loading: 'Deleting board...',
+                success: 'Board deleted successfully.',
+                error: 'Failed to delete board.'
+            }
+        )
     }
 
     const handleNavigate = () => {
         router.replace(navigate);
     }
 
-    const handleUpdateBoard = async () => {
-        // Handle update board
+    const handleUpdateBoard = (e: any) => {
+        e.preventDefault();
+
+        setIsEditing(false);
+
+        const updatedBoard: IKanbanBoard = {
+            ...board,
+            updatedBy: 'user', // TODO: Implement user
+            title: e.target.title.value,
+        }
+
+        const updateBoard = async () => {
+            await dispatch(updateKanbanBoard({ kanbanBoard: updatedBoard }));
+            await dispatch(readAllKanbanBoards())
+        }
+
+        toast.promise(
+            updateBoard(),
+            {
+                loading: 'Updating board...',
+                success: 'Board updated successfully.',
+                error: 'Failed to update board.'
+            }
+        )
+    }
+
+    const handleIsEditing = async () => {
+        setIsEditing(!isEditing);
+    }
+
+    const handleEditButton = async () => {
+        await handleIsEditing();
+
+        if (isEditing) {
+            setBoardTitle(board.title);
+        }
     }
 
     return (
-        <div className="flex flex-col justify-center p-4 rounded-md shadow-md w-96 h-48 bg-purple-400 text-black text-2xl font-bold">
+        <div className="flex flex-col justify-center p-4 rounded-md shadow-md w-96 max-md:w-80 h-48 bg-purple-400 text-black text-2xl font-bold">
             <form
                 className="flex flex-col gap-5 justify-center items-center w-full"
                 onSubmit={handleUpdateBoard}
@@ -68,13 +100,12 @@ const BoardCard = ({
                     textCenter={true}
                     onChange={e => setBoardTitle(e.target.value)}
                     disabled={!isEditing}
-                    defaultName={board.title}
                 />
 
                 <Button
                     text="Update"
                     type="submit"
-                    disabled={isEditing}
+                    disabled={!isEditing}
                     buttonSize="xs"
                     hidden={!isEditing}
                     textAlignment="center"
@@ -99,7 +130,7 @@ const BoardCard = ({
             )}
             <div className="flex justify-center gap-3 mt-2 items-center">
                 <MdDeleteForever onClick={handleDelete} className="text-red-700 cursor-pointer transition-all duration-300 hover:scale-150 active:scale-110" />
-                <CiEdit onClick={() => setIsEditing(!isEditing)} className="transition-all duration-300 hover:scale-150 cursor-pointer active:scale-110" />
+                <CiEdit onClick={handleEditButton} className="transition-all duration-300 hover:scale-150 cursor-pointer active:scale-110" />
             </div>
         </div>
     )

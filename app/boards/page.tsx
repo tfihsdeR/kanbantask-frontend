@@ -29,7 +29,7 @@ const Boards = () => {
 
     useEffect(() => {
         if (!boards[0]?._id && !loading && state) {
-            router.replace('/onboarding');
+            router.push('/onboarding');
         }
     }, [boards, state]);
 
@@ -40,7 +40,7 @@ const Boards = () => {
     }, [error]);
 
     const handleCreateBoard = () => {
-        router.replace('/onboarding');
+        router.push('/onboarding');
     }
 
     if (loading || boards.length === 0) {

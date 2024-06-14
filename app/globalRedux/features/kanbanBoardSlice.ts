@@ -148,7 +148,7 @@ export const deleteKanbanBoard = createAsyncThunk(
     'kanbanBoard/delete',
     async (state: { id: string }, { rejectWithValue }) => {
         try {
-            const response = await fetch(url + 'http://localhost:4000/api/kanbanBoard/delete', {
+            const response = await fetch(url + '/api/kanbanBoard/delete/' + state.id, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

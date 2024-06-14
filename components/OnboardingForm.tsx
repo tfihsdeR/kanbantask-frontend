@@ -52,7 +52,6 @@ const OnboardingForm = () => {
         setTimeout(() => {
             router.replace("/boards")
             toast.success("Onboarding completed successfully.");
-            // router.push("/dashboard"); // We didn't chage the page. We are still on the same page. We just changed the route.
         }, 3000);
     }
 

@@ -12,7 +12,6 @@ const Input = ({
     removeUnderline = false,
     textCenter = false,
     onChange,
-    defaultName,
 }: {
     name: string,
     type: string,
@@ -25,37 +24,21 @@ const Input = ({
     removeUnderline?: boolean
     textCenter?: boolean
     onChange?: (e: any) => void
-    defaultName?: string
 }) => {
     const _fontSize = fontSize === "sm" ? "text-sm" : fontSize === "xl" ? "text-xl" : fontSize === "2xl" ? "text-2xl" : fontSize === "base" ? "text-base" : "text-3xl"
-
-    const [_value, setValue] = useState<string>(value!);
-
-    useEffect(() => {
-        if (disabled && defaultName && _value !== defaultName) {
-            setValue(defaultName);
-        }
-    }, [disabled, defaultName, _value]);
-
-    const handleChange = (e: any) => {
-        setValue(e.target.value);
-        if (onChange) {
-            onChange(e);
-        }
-    }
 
     return (
         <input
             name={name}
             type={type}
             placeholder={placeholder}
-            value={_value}
+            value={value}
             disabled={disabled}
             required
             className={`${smallGap ? "h-10" : "h-20"} bg-transparent ${textCenter && "text-center"} ${!removeUnderline && "border-b"} ${_fontSize} w-4/5 self-center focus:outline-none 
             ${disabled && "cursor-default"}
             ${fullWidth && "w-full"}`}
-            onChange={handleChange}
+            onChange={onChange}
         >
         </input>
     )
