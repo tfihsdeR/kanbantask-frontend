@@ -6,20 +6,20 @@ import { readKanbanBoardById } from '@/app/globalRedux/features/kanbanBoardSlice
 import toast from 'react-hot-toast'
 import Loader from '@/components/Loader'
 import Board from '@/components/Board'
+import { usePathname } from 'next/navigation'
 
 const Tasks = ({ params }: { params: { boardId: string } }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { board, error, loading } = useSelector((state: RootState) => state.kanbanBoard);
 
-    useEffect(() => {
-        if (error) {
-            toast.error(error);
-        }
-    }, [error]);
+    const pathname = usePathname()
 
     useEffect(() => {
-        dispatch(readKanbanBoardById({ id: params.boardId }))
-    }, [dispatch]);
+        const readBoard = async () => {
+            await dispatch(readKanbanBoardById({ id: params.boardId }))
+        }
+        readBoard()
+    }, [dispatch, pathname, params.boardId]);
 
     if (loading) { <Loader /> }
 

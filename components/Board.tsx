@@ -21,7 +21,7 @@ const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
 
     useEffect(() => {
         const readTasks = async () => {
-            if (board?._id) {
+            if (board._id) {
                 await dispatch(readTasksByBoardId({ boardId: board!._id! }))
             }
         }
@@ -30,14 +30,28 @@ const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
     }, [dispatch, board]);
 
     useEffect(() => {
-        setTasks(tasks);
+        if (tasks.length > 0 && tasks[0].boardId === board._id) {
+            setTasks(tasks);
+        } else {
+            setTasks([]);
+        }
     }, [tasks]);
 
     useEffect(() => {
-        if (error) {
-            toast.error(error);
-        }
+        let isMounted = true; // This flag denotes if the component is mounted
+
+        setTimeout(() => {
+            if (isMounted && error) {
+                toast.error(error);
+            }
+        }, 200);
+
+        // Cleanup function to set isMounted to false when component unmounts
+        return () => {
+            isMounted = false;
+        };
     }, [error]);
+
 
     const onDragEnd = async (result: DropResult) => {
         const { destination, source, draggableId } = result;
@@ -106,6 +120,8 @@ const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
         const updatedTask: ITask = {
             title: formData.get('title') as string,
             boardId: board._id!,
+            description: formData.get('description') as string,
+            badge: formData.get('badge') as string,
         }
 
         await dispatch(createTask({ task: updatedTask }))
@@ -125,10 +141,12 @@ const Board: React.FC<{ board: IKanbanBoard }> = ({ board }) => {
                     >
                         <FaPlus />
                     </button>
+
+                    {/* modal for creation of a new task */}
                     {isCreate && (
                         <Modal
                             closeModal={CloseModal}
-                            title="Create New Task"
+                            modalTitle="Create New Task"
                             isCreate={isCreate}
                             action={CreateTask}
                             value={board._id!}

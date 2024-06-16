@@ -22,7 +22,8 @@ export const initialState: TaskState = {
         createdAt: new Date(),
         updatedAt: new Date(),
         updatedBy: '',
-        createdBy: ''
+        createdBy: '',
+        badge: ''
     },
     tasks: [],
     message: null,
@@ -45,7 +46,7 @@ export const createTask = createAsyncThunk(
             const data = await response.json();
 
             if (!response.ok) {
-                return rejectWithValue(data.error);
+                return rejectWithValue(data.message);
             }
 
             return data;
@@ -64,7 +65,7 @@ export const readTaskById = createAsyncThunk(
             const data = await response.json();
 
             if (!response.ok) {
-                return rejectWithValue(data.error);
+                return rejectWithValue(data.message);
             }
 
             return data;
@@ -83,7 +84,7 @@ export const readTasksByBoardId = createAsyncThunk(
             const data = await response.json();
 
             if (!response.ok) {
-                return rejectWithValue(data.error);
+                return rejectWithValue(data.message);
             }
 
             return data;
@@ -108,7 +109,7 @@ export const updateTask = createAsyncThunk(
             const data = await response.json();
 
             if (!response.ok) {
-                return rejectWithValue(data.error);
+                return rejectWithValue(data.message);
             }
 
             return data;
@@ -129,7 +130,7 @@ export const deleteTask = createAsyncThunk(
             const data = await response.json();
 
             if (!response.ok) {
-                return rejectWithValue(data.error);
+                return rejectWithValue(data.message);
             }
 
             return data;
@@ -153,6 +154,7 @@ const taskSlice = createSlice({
         // Create Task
         builder.addCase(createTask.pending, (state) => {
             state.loading = true;
+            state.error = null;
         });
         builder.addCase(createTask.fulfilled, (state, action) => {
             state.loading = false;
@@ -161,11 +163,13 @@ const taskSlice = createSlice({
         });
         builder.addCase(createTask.rejected, (state, action) => {
             state.loading = false;
-            state.error = action!.error!.message!
+            state.error = action!.payload! as string;
+            // state.error = action!.error!.message!
         });
 
         // Read Task By Board Id
         builder.addCase(readTaskById.pending, (state) => {
+            state.error = null;
             state.loading = true;
         });
         builder.addCase(readTaskById.fulfilled, (state, action) => {
@@ -175,12 +179,14 @@ const taskSlice = createSlice({
         });
         builder.addCase(readTaskById.rejected, (state, action) => {
             state.loading = false;
-            state.error = action!.error!.message!
+            state.error = action!.payload! as string;
+            // state.error = action!.error!.message!
         });
 
         // Read Tasks By Board Id
         builder.addCase(readTasksByBoardId.pending, (state) => {
             state.loading = true;
+            state.error = null;
         });
         builder.addCase(readTasksByBoardId.fulfilled, (state, action) => {
             state.loading = false;
@@ -189,12 +195,13 @@ const taskSlice = createSlice({
         });
         builder.addCase(readTasksByBoardId.rejected, (state, action) => {
             state.loading = false;
-            state.error = action!.error!.message!
+            state.error = action!.payload! as string;
         });
 
         // Update Task
         builder.addCase(updateTask.pending, (state) => {
             state.loading = true;
+            state.error = null;
         });
         builder.addCase(updateTask.fulfilled, (state, action) => {
             state.loading = false;
@@ -203,12 +210,14 @@ const taskSlice = createSlice({
         });
         builder.addCase(updateTask.rejected, (state, action) => {
             state.loading = false;
-            state.error = action!.error!.message!
+            state.error = action!.payload! as string;
+            // state.error = action!.error!.message!
         });
 
         // Delete Task
         builder.addCase(deleteTask.pending, (state) => {
             state.loading = true;
+            state.error = null;
         });
         builder.addCase(deleteTask.fulfilled, (state, action) => {
             state.loading = false;
@@ -216,7 +225,8 @@ const taskSlice = createSlice({
         });
         builder.addCase(deleteTask.rejected, (state, action) => {
             state.loading = false;
-            state.error = action!.error!.message!
+            state.error = action!.payload! as string;
+            // state.error = action!.error!.message!
         });
     }
 });
