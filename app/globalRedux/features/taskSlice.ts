@@ -1,7 +1,7 @@
 import { ITask, Status } from "@/types/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const url = 'http://localhost:4000';
+const url = process.env.NEXT_PUBLIC_API_URL
 
 interface TaskState {
     task: ITask,
